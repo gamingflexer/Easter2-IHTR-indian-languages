@@ -21,7 +21,7 @@ The following steps can help setting up Easter2 fast:
  - Use the `custom_dataset.ipynb` to convert your dataset into the required format.
  - install requirements as per the file ```requirements.txt```
  - Modify ```/src/config.py``` as per your needs
- - run the ```train()``` function from ```/src/easter_model.py```
+ - run the ```train()``` function from ```/src/easter_model.py``` or just simply execute the `easter_model.py`
  - sample training and testing notebooks are given in ```/notebooks``` directory
 
 #### Check GPU

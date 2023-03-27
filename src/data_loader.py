@@ -29,40 +29,28 @@ class data_loader:
             max_tw_horizontal=50,
             min_tw_horizontal=10
         )
-        
-        f = open(path + 'lines.txt')
+        base_path = './trainset/devanagari/images/' # add the train base path here
+        f = open("/home/pageocr/easter2/Easter2/notebooks/concatenated.txt") # make this using the ipynb file
         chars = set()
         for line in f:
-            if not line or line[0]=='#':
-                continue
-            lineSplit = line.strip().split(' ')
-            assert len(lineSplit) >= 9
-            fileNameSplit = lineSplit[0].split('-')
-            fileName = path + 'lines/' + fileNameSplit[0] + '/' +\
-                       fileNameSplit[0] + '-' + fileNameSplit[1] + '/' + lineSplit[0] + '.png'
-            
-            gtText = lineSplit[8].strip(" ").replace("|", " ")
-            
+            full_p = os.path.join(base_path,line).split (" ")
+            gtText = full_p[1]
+            fileName = full_p[0]
             chars = chars.union(set(list(gtText)))
             self.samples.append(Sample(gtText, fileName))
         
-        train_folders = [x.strip("\n") for x in open(path+"LWRT/train.uttlist").readlines()]
-        validation_folders = [x.strip("\n") for x in open(path+"LWRT/validation.uttlist").readlines()]
-        test_folders = [x.strip("\n") for x in open(path+"LWRT/test.uttlist").readlines()]
-
-        self.trainSamples = []
+        self.trainSamples = [] # Object of sample(text,filename_or_path) goes here in this 3
         self.validationSamples = []
         self.testSamples = []
 
         for i in range(0, len(self.samples)):
-            file = self.samples[i].filePath.split("/")[-1][:-4].strip(" ")
-            folder = "-".join(file.split("-")[:-1])
-            if (folder in train_folders): 
+            file_name = self.samples[i].filePath.split("/")[7] #for train set change acc to your name matching
+            file_name2 = self.samples[i].filePath.split("/")[4] #for val set change acc to your name matching
+            if ("train" in file_name): 
                 self.trainSamples.append(self.samples[i])
-            elif folder in validation_folders:
+            elif ("validationset_big" in file_name2):
                 self.validationSamples.append(self.samples[i])
-            elif folder in test_folders:
-                self.testSamples.append(self.samples[i])
+        # We are not using test set here
         self.trainSet()
         self.charList = sorted(list(chars))
         
@@ -158,7 +146,17 @@ class data_loader:
                     img = self.preprocess(img)                    
                     imgs[j] = img
                     
-                    val = list(map(lambda x: self.charList.index(x), text))
+                    #val = list(map(lambda x: self.charList.index(x), text))
+                    val = []
+                    #print(text)
+                    for char in text:
+                        try:
+                            index = self.charList.index(char)
+                            val.append(index)
+                        except ValueError:
+                            pass
+                            #print(char)
+                        
                     while len(val) < config.OUTPUT_SHAPE:
                         val.append(len(self.charList))
                         

@@ -3,6 +3,11 @@ import tensorflow
 import tensorflow.keras.backend as K
 from data_loader import data_loader
 
+#suprass the warnings
+
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+
 def ctc_loss(args):
     y_pred, labels, input_length, label_length = args
     return K.ctc_batch_cost(
@@ -234,15 +239,15 @@ def train():
     print ("loading metdata...")
     training_data = data_loader(config.DATA_PATH, config.BATCH_SIZE)
     validation_data = data_loader(config.DATA_PATH, config.BATCH_SIZE)
-    test_data = data_loader(config.DATA_PATH, config.BATCH_SIZE)
+    #test_data = data_loader(config.DATA_PATH, config.BATCH_SIZE) # removed test set here
 
     training_data.trainSet()
     validation_data.validationSet()
-    test_data.testSet()
+    #test_data.testSet()
 
     print("Training Samples : ", len(training_data.samples))
     print("Validation Samples : ", len(validation_data.samples))
-    print("Test Samples : ", len(test_data.samples))
+    #print("Test Samples : ", len(test_data.samples))
     print("CharList Size : ", len(training_data.charList))
     
     # callback arguments
@@ -268,11 +273,14 @@ def train():
 
     # Start training with given parameters
     print ("Training Model...")
-    model.fit_generator(
-        generator = training_data.getNext(), 
-        steps_per_epoch = STEPS_PER_EPOCH,
-        epochs = config.EPOCHS,
-        callbacks=[CHECKPOINT, TENSOR_BOARD],
-        validation_data = validation_data.getNext(), 
-        validation_steps = VALIDATION_STEPS
-    )
+    with tensorflow.device('/gpu:0'): #remove if you want to use multiple
+        model.fit_generator(
+            generator = training_data.getNext(), 
+            steps_per_epoch = STEPS_PER_EPOCH,
+            epochs = config.EPOCHS,
+            callbacks=[CHECKPOINT, TENSOR_BOARD],
+            validation_data = validation_data.getNext(), 
+            validation_steps = VALIDATION_STEPS
+        )
+
+train()
