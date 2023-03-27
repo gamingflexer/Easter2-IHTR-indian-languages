@@ -1,6 +1,5 @@
-# Easter2.0: IMPROVING CONVOLUTIONAL MODELS FOR  HANDWRITTEN TEXT RECOGNITION
+# Easter2.0: IMPROVING CONVOLUTIONAL MODELS FOR HANDWRITTEN TEXT RECOGNITION | IHTR DATASET | INDIAN LANGUAGES
 
-This repo provides the model and code for our paper: [Easter2.0: IMPROVING CONVOLUTIONAL MODELS FOR HANDWRITTEN TEXT RECOGNITION](https://arxiv.org/pdf/2205.14879.pdf)
 
 [[[Arxiv-PDF-Link](https://arxiv.org/pdf/2205.14879.pdf)]]
 
@@ -14,19 +13,27 @@ small number of trainable parameters compared to other solutions. The proposed a
 smaller, faster and efficient OCR/HTR solutions when available annotated data is limited.
 
 ### How to use?
+
 The following steps can help setting up Easter2 fast:
- - Download checkpoint from release, and put it inside ```/weigths``` directory
- - Download IAM dataset, and update data path in ```/src/config.py``` (sample notebook - ```/notebooks/iam_dataset_download.ipynb```)
+
+ - Download checkpoint from release, and put it inside ```/weigths``` directory if you want to finetune the older checkpoint or make it `False` in the config.py
+ - Download you dataset in the data folder
+ - Use the `custom_dataset.ipynb` to convert your dataset into the required format.
  - install requirements as per the file ```requirements.txt```
  - Modify ```/src/config.py``` as per your needs
  - run the ```train()``` function from ```/src/easter_model.py```
  - sample training and testing notebooks are given in ```/notebooks``` directory
 
-### Contributing
-This is a basic keras implementation of Easter2.0 model as per the paper (paper link above). If there is an issue or feature request, feel free to open an issue. Additionally, a PR is always welcome.
+#### Check GPU
 
-## Citation
-If you find our work helpful, please cite the following:
+```
+import tensorflow as tf
+print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+```
+
+## Owner & Citation
+
+I have used the work of chaudhary2022easter2. If you find our work helpful, please cite the following:
 ```
 @article{chaudhary2022easter2,
   title={Easter2. 0: Improving convolutional models for handwritten text recognition},
