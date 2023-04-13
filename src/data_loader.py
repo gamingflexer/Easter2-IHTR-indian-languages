@@ -14,11 +14,12 @@ class Sample:
         self.filePath = filePath
         
 class data_loader:
-    def __init__(self, path, batch_size):
+    def __init__(self, path, batch_size,lang):
         self.batchSize = batch_size
         self.samples = []
         self.currIdx = 0
         self.charList = []
+        self.lang = lang
         
         # creating taco object for augmentation (checkout Easter2.0 paper)
         self.mytaco = Taco(
@@ -29,28 +30,46 @@ class data_loader:
             max_tw_horizontal=50,
             min_tw_horizontal=10
         )
-        base_path = './trainset/devanagari/images/' # add the train base path here
-        f = open("/home/pageocr/easter2/Easter2/notebooks/concatenated.txt") # make this using the ipynb file
+        base_path = f'/data/BADRI/IHTR/trainset/{lang}/images/'
+        f = open(f"/home/pageocr/easter2/Easter2/notebooks/small/concatenated_{lang}_small.txt")
         chars = set()
         for line in f:
             full_p = os.path.join(base_path,line).split (" ")
+#             if not line or line[0]=='#':
+#                 continue
+#             lineSplit = line.strip().split(' ')
+#             assert len(lineSplit) >= 9
+#             fileNameSplit = lineSplit[0].split('-')
+#             fileName = path + 'lines/' + fileNameSplit[0] + '/' +\
+#                        fileNameSplit[0] + '-' + fileNameSplit[1] + '/' + lineSplit[0] + '.png'
+#             gtText = lineSplit[8].strip(" ").replace("|", " ")
             gtText = full_p[1]
             fileName = full_p[0]
             chars = chars.union(set(list(gtText)))
+            #print(gtText, fileName)
+            #print(Sample(gtText, fileName))
             self.samples.append(Sample(gtText, fileName))
         
-        self.trainSamples = [] # Object of sample(text,filename_or_path) goes here in this 3
+        # train_folders = [x.strip("\n") for x in open(path+"LWRT/train.uttlist").readlines()]
+        # validation_folders = [x.strip("\n") for x in open(path+"LWRT/validation.uttlist").readlines()]
+        # test_folders = [x.strip("\n") for x in open(path+"LWRT/test.uttlist").readlines()]
+        #print(self.samples)
+        self.trainSamples = []
         self.validationSamples = []
         self.testSamples = []
 
         for i in range(0, len(self.samples)):
-            file_name = self.samples[i].filePath.split("/")[7] #for train set change acc to your name matching
-            file_name2 = self.samples[i].filePath.split("/")[4] #for val set change acc to your name matching
-            if ("train" in file_name): 
+            file_name = self.samples[i].filePath.split("/")[4]
+            file_name2 = self.samples[i].filePath.split("/")[4]
+            #folder = "-".join(file.split("-")[:-1])
+            #print("train" in file_name)
+            if ("trainset" in file_name): 
                 self.trainSamples.append(self.samples[i])
-            elif ("validationset_big" in file_name2):
+            elif ("validationset_small" in file_name2):
                 self.validationSamples.append(self.samples[i])
-        # We are not using test set here
+            # elif ("test" in file_name):
+            #     self.testSamples.append(self.samples[i])
+        #print(self.testSamples[0])
         self.trainSet()
         self.charList = sorted(list(chars))
         
