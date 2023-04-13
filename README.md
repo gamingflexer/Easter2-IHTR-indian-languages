@@ -1,7 +1,7 @@
 # Easter2.0: IMPROVING CONVOLUTIONAL MODELS FOR HANDWRITTEN TEXT RECOGNITION | IHTR DATASET | INDIAN LANGUAGES
 
 
-[[[Arxiv-PDF-Link](https://arxiv.org/pdf/2205.14879.pdf)]]
+[[[Arxiv-PDF-Link](https://arxiv.org/pdf/2205.14879.pdf)
 
 ### Overview
 In this paper, we proposed a convolutional architecture for the task of handwritten text recognition that utilizes only 1D
@@ -16,13 +16,15 @@ smaller, faster and efficient OCR/HTR solutions when available annotated data is
 
 The following steps can help setting up Easter2 fast:
 
- - Download checkpoint from release, and put it inside ```/weigths``` directory if you want to finetune the older checkpoint or make it `False` in the config.py
+ - Clone the repository
+ - Install requirements as per the file ```requirements.txt```
+ - Download checkpoint from release, and put it inside ```/weigths``` directory (if you want to finetune the older checkpoint or make it `False` in the config.py)
  - Download you dataset in the data folder
- - Use the `custom_dataset.ipynb` to convert your dataset into the required format.
- - install requirements as per the file ```requirements.txt```
+ - Use the `custom_dataset.ipynb` to convert your dataset into the required format. CHnage the path inside it will make a file with all the paths of the files. (./img_path.png words_name)
  - Modify ```/src/config.py``` as per your needs
- - run the ```train()``` function from ```/src/easter_model.py``` or just simply execute the `easter_model.py`
- - sample training and testing notebooks are given in ```/notebooks``` directory
+ - Using the created file in the previous step, and add its path in the ```/src/data_loader.py``` file
+ - Run the ```train()``` function from ```/src/easter_model.py``` or just simply execute the `easter_model.py`
+ - Sample training and testing notebooks are given in ```/notebooks``` directory
 
 #### Check GPU
 
