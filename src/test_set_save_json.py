@@ -103,10 +103,7 @@ def decoder(output,letters):
     for j in range(output.shape[0]):
         out_best = list(np.argmax(output[j,:], 1))
         out_best = [k for k, g in itertools.groupby(out_best)]
-        outstr = ''
-        for c in out_best:
-            if c < len(letters):
-                outstr += letters[c]
+        outstr = ''.join(letters[c] for c in out_best if c < len(letters))
         ret.append(outstr)
     return ret
 

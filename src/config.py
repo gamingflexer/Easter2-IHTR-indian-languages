@@ -11,7 +11,7 @@ INPUT_SHAPE = (INPUT_WIDTH, INPUT_HEIGHT)
 TACO_AUGMENTAION_FRACTION = 0.9
 
 # If Long lines augmentation is needed (see paper)
-LONG_LINES = True
+LONG_LINES = False
 LONG_LINES_FRACTION = 0.3
 
 # Model training parameters
@@ -22,7 +22,7 @@ DROPOUT = True
 OUTPUT_SHAPE = 500
 
 # Initializing weights from pre-trained 
-LOAD = True
+LOAD = False
 LOAD_CHECKPOINT_PATH = "../weights/saved_checkpoint.hdf5"
 
 # Other learning parametes
